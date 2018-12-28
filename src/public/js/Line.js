@@ -1,14 +1,13 @@
 class Line extends Behaviour {
-	draw(x, y) {
-		ctx.lineWidth = this.size;
-		ctx.lineTo(x, y);
-		ctx.stroke();
-	}
-	
-	parse(array) {
-		return [
-			array[0], array[array.length - 1]
-		];
+	display(stack) {
+		if (stack.length == 2) {
+			ctx.beginPath();
+			ctx.lineWidth = this.size;
+			ctx.moveTo(stack[0].x, stack[0].y);
+			ctx.lineTo(stack[1].x, stack[1].y);
+			ctx.stroke();
+			ctx.closePath();
+		}
 	}
 
 	add(stack) {

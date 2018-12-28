@@ -1,12 +1,15 @@
 class Pencil extends Behaviour {
-	draw(x, y) {
-		ctx.lineWidth = this.size;
-		ctx.lineTo(x, y);
-		ctx.stroke();
-	}
-	
-	parse(array) {
-		return array;
+	display(stack) {
+		if (stack.length > 1) {
+			for (let i = 1; i < stack.length; i++) {
+				ctx.beginPath();
+				ctx.lineWidth = this.size;
+				ctx.moveTo(stack[i - 1].x, stack[i - 1].y);
+				ctx.lineTo(stack[i].x, stack[i].y);
+				ctx.stroke();
+				ctx.closePath();
+			}
+		}
 	}
 
 	add(stack) {

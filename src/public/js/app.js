@@ -14,18 +14,18 @@ cvs.height = height;
 // creating socket connection
 const socket = io('http://localhost:3000');
 socket.on('track', (data) => {
-	console.log(data);
 	track.push(data.map(u => (u.pen = pens[u.penName], u)));
 });
 
 // list of all the available pen
 let pens = {
 	'Pencil': new Pencil(),
-	'Line': new Line()
+	'Line': new Line(),
+	'Square': new Square()
 };
 
 // current pen
-let pen = new Pencil();
+let pen = pens.Pencil;
 
 // track of all the drawing in the screen
 let track = [];
@@ -66,18 +66,18 @@ function handleMouseMove(e) {
 
 function handleMouseUp(e) {
 	pen.state = false;
+	currentTrack.pop();
 	currentTrack.push({
 		x: mouseX,
 		y: mouseY,
 		pen
 	});
 
-	let newTrack = pen.parse(currentTrack);
-	let key = newTrack[0].pen.constructor.name;
+	let key = currentTrack[0].pen.constructor.name;
 
-	socket.emit('track', newTrack.map(u => (u.penName = key, u)));
+	socket.emit('track', currentTrack.map(u => (u.penName = key, u)));
 
-	track.push(newTrack);
+	track.push(currentTrack);
 	currentTrack = [];
 	ctx.closePath();
 }
@@ -86,21 +86,11 @@ function handleMouseUp(e) {
 function draw() {
 	ctx.clearRect(0, 0, cvs.width, cvs.height);
 	pen.mouse();
-	ctx.beginPath();
 
-	currentTrack.forEach(i => {
-		i.pen.draw(i.x, i.y);
-	});
+	if (currentTrack.length > 0)
+		currentTrack[0].pen.display(currentTrack);
 
-	track.forEach(i => {
-		ctx.beginPath();
-
-		i.forEach(j => {
-			j.pen.draw(j.x, j.y);
-		});
-
-		ctx.closePath();
-	});
+	track.forEach(i => i[0].pen.display(i));
 
 	requestAnimationFrame(draw);
 }
