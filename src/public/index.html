@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Realtime whiteboard app</title>
+
+	<!-- css files -->
+	<link rel="stylesheet" href="css/app.css" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+</head>
+<body>
+	<main>
+		<!-- main canvas -->
+		<canvas></canvas>
+
+		<!-- differnent tools for drawing -->
+		<aside>
+			<div class="drawing_tool selected" data-tool="Pencil">
+				<i class="fa fa-pencil"></i>
+			</div>
+
+			<div class="drawing_tool" data-tool="Line">
+				<i class="fa fa-minus"></i>
+			</div>
+		</aside>
+	</main>
+
+	<!-- javascript files -->
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="js/Behaviour.js"></script>
+	<script src="js/Pencil.js"></script>
+	<script src="js/line.js"></script>
+	<script src="js/app.js"></script>
+</body>
+</html>
