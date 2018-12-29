@@ -138,3 +138,23 @@ canvas {
   	background: #4CAF50;
   	cursor: pointer;
 }
+
+.undo_option {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	top: 16px;
+	right: 100px;
+	width: 40px;
+	height: 40px;
+	padding: 6px;
+	cursor: pointer;
+	font-size: 20px;
+	border: 1px solid rgba(0, 0, 0, .6);
+	border-radius: 50px;
+}
+
+.undo_option:hover {
+	background: #f2f2f2;
+}

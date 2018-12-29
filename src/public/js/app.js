@@ -13,8 +13,11 @@ cvs.height = height;
 
 // creating socket connection
 const socket = io('http://localhost:3000');
-socket.on('track', (data) => {
+socket.on('track', data => {
 	track.push(data.map(u => (u.pen = pens[u.penName], u)));
+});
+socket.on('undo', () => {
+	track.pop();
 });
 
 // list of all the available pen
@@ -134,4 +137,10 @@ $('.color_options .color').forEach(element => {
 // handling size change
 $('.pen_size_slider .slider').addEventListener('input', function (event) {
 	size = event.target.value;
+});
+
+// handling undo event
+$('.undo_option').addEventListener('click', function (event) {
+	track.pop();
+	socket.emit('undo');
 });

@@ -12,8 +12,12 @@ const server = app.listen(port, () => {
 const socket = require('socket.io');
 const io = socket(server);
 
-io.sockets.on('connection', (socket) => {
-	socket.on('track', (data) => {
+io.sockets.on('connection', socket => {
+	socket.on('track', data => {
 		socket.broadcast.emit('track', data);
+	});
+
+	socket.on('undo', () => {
+		socket.broadcast.emit('undo');
 	});
 });
