@@ -1,15 +1,17 @@
 class Pencil extends Behaviour {
 	display(stack) {
 		if (stack.length > 1) {
+			ctx.beginPath();
+			
 			for (let i = 1; i < stack.length; i++) {
-				ctx.beginPath();
 				ctx.strokeStyle = stack[0].color;
-				ctx.lineWidth = this.size;
+				ctx.lineWidth = stack[0].size;
 				ctx.moveTo(stack[i - 1].x, stack[i - 1].y);
 				ctx.lineTo(stack[i].x, stack[i].y);
 				ctx.stroke();
-				ctx.closePath();
 			}
+
+			ctx.closePath();
 		}
 	}
 

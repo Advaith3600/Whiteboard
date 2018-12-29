@@ -12,7 +12,7 @@ class Square extends Behaviour {
 
 	display(stack) {
 		if (stack.length == 2) {
-			ctx.lineWidth = this.size;
+			ctx.lineWidth = stack[0].size;
 			ctx.strokeStyle = stack[0].color;
 
 			let width = stack[1].x - stack[0].x;

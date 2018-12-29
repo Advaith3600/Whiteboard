@@ -29,6 +29,7 @@ let pen = pens.Pencil;
 
 // current color
 let color = '#000';
+let size = 6; // current pen size
 
 // track of all the drawing in the screen
 let track = [];
@@ -52,7 +53,7 @@ function handleMouseDown(e) {
 	currentTrack.push({
 		x: mouseX,
 		y: mouseY,
-		color, pen
+		color, pen, size
 	});
 
 	pen.state = true;
@@ -128,4 +129,9 @@ $('.color_options .color').forEach(element => {
 			element.classList.add('selected');
 		}
 	});
+});
+
+// handling size change
+$('.pen_size_slider .slider').addEventListener('input', function (event) {
+	size = event.target.value;
 });
