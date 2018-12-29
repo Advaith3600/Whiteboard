@@ -27,6 +27,9 @@ let pens = {
 // current pen
 let pen = pens.Pencil;
 
+// current color
+let color = '#000';
+
 // track of all the drawing in the screen
 let track = [];
 // tracking the currently drawing art
@@ -49,7 +52,7 @@ function handleMouseDown(e) {
 	currentTrack.push({
 		x: mouseX,
 		y: mouseY,
-		pen
+		color, pen
 	});
 
 	pen.state = true;
@@ -87,10 +90,12 @@ function draw() {
 	ctx.clearRect(0, 0, cvs.width, cvs.height);
 	pen.mouse();
 
+	// drawing all the elements
+	track.forEach(i => i[0].pen.display(i));
+
+	// drawing the currentling drawing element
 	if (currentTrack.length > 0)
 		currentTrack[0].pen.display(currentTrack);
-
-	track.forEach(i => i[0].pen.display(i));
 
 	requestAnimationFrame(draw);
 }
@@ -98,9 +103,7 @@ function draw() {
 draw();
 
 // handling changing drawing tools
-let tools = $('.drawing_tool');
-
-tools.forEach(element => {
+$('.drawing_tool').forEach(element => {
 	element.addEventListener('click', function (event) {
 		// if the selected drawing tool is not already been selected
 		if (element.className.split(/\s+/).indexOf("selected") === -1) {
@@ -111,6 +114,18 @@ tools.forEach(element => {
 				$('.drawing_tool.selected').classList.remove('selected');
 				element.classList.add('selected');
 			}
+		}
+	});
+});
+
+// handling color change
+$('.color_options .color').forEach(element => {
+	element.addEventListener('click', function (event) {
+		// if the selected color is not already been selected
+		if (element.className.split(/\s+/).indexOf("selected") === -1) {
+			color = element.dataset.color;
+			$('.color_options .color.selected').classList.remove('selected');
+			element.classList.add('selected');
 		}
 	});
 });

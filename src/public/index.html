@@ -10,23 +10,34 @@
 </head>
 <body>
 	<main>
-		<!-- main canvas -->
-		<canvas></canvas>
+		<div class="color_options">
+			<div class="color selected color_black" data-color="#000"></div>
+			<div class="color color_blue" data-color="#07e"></div>
+			<div class="color color_green" data-color="#0a0"></div>
+			<div class="color color_yellow" data-color="#eb0"></div>
+			<div class="color color_red" data-color="#e22"></div>
+		</div>
 
-		<!-- differnent tools for drawing -->
-		<aside>
-			<div class="drawing_tool selected" data-tool="Pencil">
-				<i class="fa fa-pencil"></i>
-			</div>
+		<div class="main_wrapper">
+			<!-- main canvas -->
+			<canvas></canvas>
 
-			<div class="drawing_tool" data-tool="Line">
-				<i class="fa fa-minus"></i>
-			</div>
+			<!-- differnent tools for drawing -->
+			<aside>
+				<div class="drawing_tool selected" data-tool="Pencil" title="Pencil">
+					<i class="fa fa-pencil"></i>
+				</div>
 
-			<div class="drawing_tool" data-tool="Square">
-				<i class="fa fa-square-o"></i>
-			</div>
-		</aside>
+				<div class="drawing_tool" data-tool="Line" title="Line">
+					<i class="fa fa-minus"></i>
+				</div>
+
+				<div class="drawing_tool" data-tool="Square" title="Square">
+					<i class="fa fa-square-o"></i>
+				</div>
+			</aside>
+		</div>
+
 	</main>
 
 	<!-- javascript files -->

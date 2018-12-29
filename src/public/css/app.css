@@ -16,10 +16,10 @@ body {
 canvas {
 	background: white;
 	border: 1px solid rgba(0, 0, 0, .1);
-	cursor: crosshair;
+	cursor: none;
 }
 
-main {
+.main_wrapper {
 	display: flex;
 	justify-content: space-between;
 }
@@ -50,3 +50,30 @@ aside {
 	background: grey;
 	color: white;
 }
+
+.color_options {
+	display: flex;
+	padding: 16px 0;
+}
+
+.color_options .color {
+	border-radius: 100%;
+	width: 24px;
+	height: 24px;
+	transition: transform .2s ease-in;
+	cursor: pointer;
+}
+
+.color_options .color:not(:last-child) {
+	margin-right: 10px;
+}
+
+.color_options .color:hover, .color_options .color.selected {
+	transform: translateY(-5px);
+}
+
+.color_black { background: #000; }
+.color_blue { background: #07e; }
+.color_green { background: #0a0; }
+.color_yellow { background: #eb0; }
+.color_red { background: #e22; }
