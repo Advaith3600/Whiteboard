@@ -6,10 +6,13 @@ class Behaviour {
 
 	mouse() {
 		if (mouseAvailable) {
-			ctx.beginPath();
-			ctx.arc(mouseX, mouseY, this.size, 0, 2 * Math.PI);
-			ctx.fill();
-			ctx.closePath();
+			let pointer = $('.mouse_pointer');
+
+			pointer.style.top = mouseY + 'px';
+			pointer.style.left = mouseX + 'px';
+			pointer.style.width = this.size + 'px';
+			pointer.style.height = this.size + 'px';
+			pointer.style.background = color;
 		}
 	}
 }

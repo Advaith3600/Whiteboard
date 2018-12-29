@@ -5,8 +5,8 @@ const cvs = $('canvas');
 const ctx = cvs.getContext('2d');
 
 // setting width and height of the canvas
-const width = 800;
-const height = 600;
+const width = 3000;
+const height = 3000;
 
 cvs.width = width;
 cvs.height = height;
@@ -59,8 +59,8 @@ function handleMouseDown(e) {
 }
 
 function handleMouseMove(e) {
-	mouseX = e.x - cvs.offsetLeft;
-	mouseY = e.y - cvs.offsetTop;
+	mouseX = e.pageX - cvs.offsetLeft;
+	mouseY = e.pageY - cvs.offsetTop;
 
 	if (pen.state) {
 		pen.add(currentTrack);
