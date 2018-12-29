@@ -14,7 +14,8 @@ cvs.height = height;
 // creating socket connection
 const socket = io('http://localhost:3000');
 socket.on('track', data => {
-	track.push(data.map(u => (u.pen = pens[u.penName], u)));
+	console.log(data);
+	track.push(data.map(u => (u.pen = new pens[u.penName](u.pen.size, u.pen.color), u)));
 });
 socket.on('undo', () => {
 	track.pop();
@@ -22,17 +23,13 @@ socket.on('undo', () => {
 
 // list of all the available pen
 let pens = {
-	'Pencil': new Pencil(),
-	'Line': new Line(),
-	'Square': new Square()
+	'Pencil': Pencil,
+	'Line': Line,
+	'Square': Square
 };
 
 // current pen
-let pen = pens.Pencil;
-
-// current color
-let color = '#000';
-let size = 6; // current pen size
+let pen = new pens.Pencil();
 
 // track of all the drawing in the screen
 let track = [];
@@ -56,7 +53,7 @@ function handleMouseDown(e) {
 	currentTrack.push({
 		x: mouseX,
 		y: mouseY,
-		color, pen, size
+		pen
 	});
 
 	pen.state = true;
@@ -72,7 +69,6 @@ function handleMouseMove(e) {
 }
 
 function handleMouseUp(e) {
-	pen.state = false;
 	currentTrack.pop();
 	currentTrack.push({
 		x: mouseX,
@@ -83,6 +79,7 @@ function handleMouseUp(e) {
 	let key = currentTrack[0].pen.constructor.name;
 
 	socket.emit('track', currentTrack.map(u => (u.penName = key, u)));
+	pen = new pens[pen.constructor.name](pen.size, pen.color);
 
 	track.push(currentTrack);
 	currentTrack = [];
@@ -114,7 +111,7 @@ $('.drawing_tool').forEach(element => {
 			let tool = element.dataset.tool;
 
 			if (pens[tool]) {
-				pen = pens[tool];
+				pen = new pens[tool]();
 				$('.drawing_tool.selected').classList.remove('selected');
 				element.classList.add('selected');
 			}
@@ -127,7 +124,7 @@ $('.color_options .color').forEach(element => {
 	element.addEventListener('click', function (event) {
 		// if the selected color is not already been selected
 		if (element.className.split(/\s+/).indexOf("selected") === -1) {
-			color = element.dataset.color;
+			pen.color = element.dataset.color;
 			$('.color_options .color.selected').classList.remove('selected');
 			element.classList.add('selected');
 		}
@@ -136,7 +133,7 @@ $('.color_options .color').forEach(element => {
 
 // handling size change
 $('.pen_size_slider .slider').addEventListener('input', function (event) {
-	size = event.target.value;
+	pen.size = event.target.value;
 });
 
 // handling undo event

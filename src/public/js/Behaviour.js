@@ -1,5 +1,7 @@
 class Behaviour {
-	constructor() {
+	constructor(size = 6, color = '#000') {
+		this.size = size;
+		this.color = color;
 		this.state = false;
 	}
 
@@ -9,9 +11,9 @@ class Behaviour {
 
 			pointer.style.top = mouseY + 'px';
 			pointer.style.left = mouseX + 'px';
-			pointer.style.width = size + 'px';
-			pointer.style.height = size + 'px';
-			pointer.style.background = color;
+			pointer.style.width = this.size + 'px';
+			pointer.style.height = this.size + 'px';
+			pointer.style.background = this.color;
 		}
 	}
 }
