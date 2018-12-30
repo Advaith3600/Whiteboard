@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+	<meta name="description" content="A realtime whiteboard to play with friends" />
 	<title>Realtime whiteboard app</title>
 
 	<!-- css files -->
@@ -34,13 +36,17 @@
 		<div class="drawing_tool" data-tool="Square" title="Square">
 			<i class="fa fa-square-o"></i>
 		</div>
+
+		<div class="drawing_tool" data-tool="Circle" title="Cirlce">
+			<i class="fa fa-circle-thin"></i>
+		</div>
 	</aside>
 
 	<div class="undo_option" title="undo">
 		<i class="fa fa-undo"></i>
 	</div>
 
-	<div class="pen_size_slider">
+	<div class="pen_size_slider" title="Change pen size">
 		<input type="range" max="32" min="2" value="6" class="slider" />
 	</div>
 
@@ -49,9 +55,10 @@
 	<!-- javascript files -->
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="js/Behaviour.js"></script>
-	<script src="js/Pencil.js"></script>
-	<script src="js/Line.js"></script>
-	<script src="js/Square.js"></script>
+	<script src="js/pens/Pencil.js"></script>
+	<script src="js/pens/Line.js"></script>
+	<script src="js/pens/Square.js"></script>
+	<script src="js/pens/Circle.js"></script>
 	<script src="js/app.js"></script>
 </body>
 </html>

@@ -25,7 +25,8 @@ socket.on('undo', () => {
 let pens = {
 	'Pencil': Pencil,
 	'Line': Line,
-	'Square': Square
+	'Square': Square,
+	'Circle': Circle
 };
 
 // current pen
