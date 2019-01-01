@@ -13,27 +13,18 @@ cvs.height = height;
 
 // creating socket connection
 const socket = io('http://localhost:3000');
-socket.on('track', data => {
-	console.log(data);
-	track.push(data.map(u => (u.pen = new pens[u.penName](u.pen.size, u.pen.color), u)));
-});
-socket.on('undo', () => {
-	track.pop();
-});
+socket.on('track', data => track.push(data.map(u => (u.pen = new pens[u.penName](u.pen.size, u.pen.color), u))));
+socket.on('undo', () => track.pop());
 
 // list of all the available pen
-let pens = {
-	'Pencil': Pencil,
-	'Line': Line,
-	'Square': Square,
-	'Circle': Circle
-};
+let pens = { Pencil, Line, Square, Circle };
 
 // current pen
 let pen = new pens.Pencil();
 
 // track of all the drawing in the screen
 let track = [];
+let trackLength = 0; // keep the track of track's length
 // tracking the currently drawing art
 let currentTrack = [];
 
@@ -41,7 +32,7 @@ let currentTrack = [];
 let mouseX = null, mouseY = null;
 let mouseAvailable = false;
 
-// registering event listeners
+// registering canvas event listeners
 cvs.addEventListener('mousedown', handleMouseDown);
 cvs.addEventListener('mousemove', handleMouseMove);
 cvs.addEventListener('mouseup', handleMouseUp);
@@ -49,8 +40,6 @@ cvs.addEventListener('mouseover', () => mouseAvailable = true);
 cvs.addEventListener('mouseout', () => mouseAvailable = false);
 
 function handleMouseDown(e) {
-	ctx.beginPath();
-
 	currentTrack.push({
 		x: mouseX,
 		y: mouseY,
@@ -80,24 +69,29 @@ function handleMouseUp(e) {
 	let key = currentTrack[0].pen.constructor.name;
 
 	socket.emit('track', currentTrack.map(u => (u.penName = key, u)));
-	pen = new pens[pen.constructor.name](pen.size, pen.color);
+	pen = new pen.constructor(pen.size, pen.color);
 
 	track.push(currentTrack);
 	currentTrack = [];
-	ctx.closePath();
 }
 
 // function which draws everything into the canvas
 function draw() {
-	ctx.clearRect(0, 0, cvs.width, cvs.height);
 	pen.mouse();
 
-	// drawing all the elements
-	track.forEach(i => i[0].pen.display(i));
+	// redrawing everything if there is a change
+	if (track.length != trackLength || currentTrack.length > 0) {
+		ctx.clearRect(0, 0, cvs.width, cvs.height);
 
-	// drawing the currentling drawing element
-	if (currentTrack.length > 0)
-		currentTrack[0].pen.display(currentTrack);
+		// drawing all the elements
+		track.forEach(i => i[0].pen.display(i));
+
+		// drawing the currentling drawing element
+		if (currentTrack.length > 0)
+			currentTrack[0].pen.display(currentTrack);
+
+		trackLength = track.length;
+	}
 
 	requestAnimationFrame(draw);
 }
@@ -112,7 +106,7 @@ $('.drawing_tool').forEach(element => {
 			let tool = element.dataset.tool;
 
 			if (pens[tool]) {
-				pen = new pens[tool]();
+				pen = new pens[tool](pen.size, pen.color);
 				$('.drawing_tool.selected').classList.remove('selected');
 				element.classList.add('selected');
 			}
@@ -133,8 +127,8 @@ $('.color_options .color').forEach(element => {
 });
 
 // handling size change
-$('.pen_size_slider .slider').addEventListener('input', function (event) {
-	pen.size = event.target.value;
+$('.pen_size_slider .slider').addEventListener('input', function ({ target }) {
+	pen.size = target.value;
 });
 
 // handling undo event
