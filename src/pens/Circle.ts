@@ -1,5 +1,7 @@
-class Circle extends Behaviour {
-	add(stack) {
+import Behaviour from "../Behaviour";
+
+export default class Circle extends Behaviour {
+	add(stack, mouseX: number, mouseY: number) {
 		stack.push({
 			x: mouseX,
 			y: mouseY,
@@ -10,7 +12,7 @@ class Circle extends Behaviour {
 			stack.splice(1, 1);
 	}
 
-	display(stack) {
+	display(stack, ctx) {
 		if (stack.length == 2) {
 			ctx.beginPath();
 			ctx.lineWidth = stack[0].pen.size;

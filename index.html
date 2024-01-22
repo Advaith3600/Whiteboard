@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A realtime whiteboard to play with friends" />
+    <title>Realtime Whiteboard by @advaith3600</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body style="display: none;">
+    <!-- main drawing area -->
+    <canvas></canvas>
+
+    <!-- color options -->
+    <div class="color_options">
+      <div class="color selected color_black" data-color="#000"></div>
+      <div class="color color_blue" data-color="#07e"></div>
+      <div class="color color_green" data-color="#0a0"></div>
+      <div class="color color_yellow" data-color="#eb0"></div>
+      <div class="color color_red" data-color="#e22"></div>
+    </div>
+
+    <!-- differnent tools for drawing -->
+    <aside class="options_panel">
+      <div class="drawing_tool selected" data-tool="Pencil" title="Pencil">
+        <i class="ri-pencil-line"></i>
+      </div>
+
+      <div class="drawing_tool" data-tool="Line" title="Line">
+        <i class="ri-subtract-fill"></i>
+      </div>
+
+      <div class="drawing_tool" data-tool="Square" title="Square">
+        <i class="ri-square-line"></i>
+      </div>
+
+      <div class="drawing_tool" data-tool="Circle" title="Cirlce">
+        <i class="ri-circle-line"></i>
+      </div>
+    </aside>
+
+    <div class="undo_option" title="undo">
+      <i class="ri-arrow-go-back-line"></i>
+    </div>
+
+    <div class="pen_size_slider" title="Change pen size">
+      <input type="range" max="32" min="2" value="6" class="slider" />
+    </div>
+
+    <div class="mouse_pointer"></div>
+
+    <script type="module" src="/src/app.ts"></script>
+  </body>
+</html>

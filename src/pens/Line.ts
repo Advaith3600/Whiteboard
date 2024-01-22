@@ -1,5 +1,7 @@
-class Line extends Behaviour {
-	display(stack) {
+import Behaviour from '../Behaviour';
+
+export default class Line extends Behaviour {
+	display(stack, ctx) {
 		if (stack.length == 2) {
 			ctx.beginPath();
 			ctx.lineWidth = stack[0].pen.size;
@@ -11,7 +13,7 @@ class Line extends Behaviour {
 		}
 	}
 
-	add(stack) {
+	add(stack, mouseX: number, mouseY: number) {
 		stack.push({
 			x: mouseX,
 			y: mouseY,

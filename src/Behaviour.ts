@@ -1,11 +1,13 @@
-class Behaviour {
+import { $ } from './utils';
+
+export default class Behaviour {
 	constructor(size = 6, color = '#000') {
 		this.size = size;
 		this.color = color;
 		this.state = false;
 	}
 
-	mouse() {
+	mouse(mouseAvailable: boolean, mouseX: number, mouseY: number) {
 		let pointer = $('.mouse_pointer');
 
 		if (mouseAvailable) {

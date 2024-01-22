@@ -1,16 +1,23 @@
 {
   "name": "whiteboard",
-  "version": "1.0.0",
-  "description": "A realtime whiteboard to play with friends",
-  "main": "server.js",
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "dev": "bun server.ts",
+    "build": "vite build --ssrManifest --outDir dist/client",
+    "preview": "cross-env NODE_ENV=production bun server.ts"
   },
-  "author": "Advaith AJ",
-  "license": "ISC",
+  "devDependencies": {
+    "@types/bun": "^1.0.3",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.8"
+  },
   "dependencies": {
-    "express": "^4.16.4",
-    "socket.io": "^2.2.0"
+    "compression": "^1.7.4",
+    "cross-env": "^7.0.3",
+    "express": "^4.18.2",
+    "sirv": "^2.0.4",
+    "socket.io": "^4.7.4",
+    "socket.io-client": "^4.7.4"
   }
 }

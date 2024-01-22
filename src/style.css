@@ -6,12 +6,11 @@ body {
 	margin: 0;
 	min-height: 100vh;
 	font-family: arial;
-	background: #f2f2f2;
+	background: white;
 }
 
 canvas {
 	background: white;
-	border: 1px solid rgba(0, 0, 0, .1);
 	cursor: none;
 }
 
@@ -29,28 +28,28 @@ canvas {
 	display: flex;
 	padding: 10px 16px;
 	cursor: pointer;
-	border: 1px solid rgb(0, 0, 0, .2);
+	border: 1px solid rgb(0, 0, 0, .6);
+	border-right: none;
 	border-bottom-left-radius: 50px;
 	border-top-left-radius: 50px;
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;
-	background: white;
+	background-color: white;
 	font-size: 26px;
 	width: 50px;
-	transition: width .3s;
+	transition: all .3s;
 }
 
 .drawing_tool:not(:last-child) {
-	margin-bottom: 16px;
+	margin-bottom: 0.5rem;
 }
 
 .drawing_tool:hover {
-	background: lightgrey;
-	width: 80px;
+	background-color: #ddd;
 }
 
 .drawing_tool.selected {
-	background: grey;
+	background-color: #222;
 	color: white;
 	width: 80px;
 }
@@ -66,8 +65,8 @@ canvas {
 
 .color_options .color {
 	border-radius: 100%;
-	width: 24px;
-	height: 24px;
+	width: 30px;
+	height: 30px;
 	transition: transform .2s ease-in;
 	cursor: pointer;
 }
@@ -146,8 +145,8 @@ canvas {
 	position: fixed;
 	top: 16px;
 	right: 100px;
-	width: 40px;
-	height: 40px;
+	width: 50px;
+	height: 50px;
 	padding: 6px;
 	cursor: pointer;
 	font-size: 20px;
