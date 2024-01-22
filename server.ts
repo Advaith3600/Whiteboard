@@ -2,6 +2,7 @@ import fs from 'node:fs/promises'
 import express from 'express'
 import { Server } from 'socket.io'
 import { createServer } from 'http'
+import { randomUUID } from 'crypto';
 
 // Constants
 const isProduction = process.env.NODE_ENV === 'production'
@@ -12,9 +13,6 @@ const base = process.env.BASE || '/'
 const templateHtml = isProduction
   ? await fs.readFile('./dist/client/index.html', 'utf-8')
   : ''
-const ssrManifest = isProduction
-  ? await fs.readFile('./dist/client/.vite/ssr-manifest.json', 'utf-8')
-  : undefined
 
 // Create http server
 const app = express()
@@ -41,6 +39,11 @@ app.use('*', async (req, res) => {
   try {
     const url = req.originalUrl.replace(base, '')
 
+    if (url === '') {
+      res.redirect(randomUUID());
+      return;
+    }
+
     let template
     if (!isProduction) {
       // Always read fresh template in development
@@ -62,14 +65,43 @@ app.use('*', async (req, res) => {
 const server = createServer(app)
 const io = new Server(server);
 
-io.on('connection', socket => {
-	socket.on('track', data => {
-		socket.broadcast.emit('track', data);
-	});
+// Create a Map to store the track data for each room
+const roomData = new Map();
 
-	socket.on('undo', () => {
-		socket.broadcast.emit('undo');
-	});
+io.on('connection', socket => {
+  // When a user joins a room
+  socket.on('joinRoom', room => {
+    socket.join(room);
+
+    // Send the current track data for the room to the user
+    const trackData = roomData.get(room) || [];
+    socket.emit('roomJoined', trackData);
+  });
+
+  // When a user sends track data
+  socket.on('track', ({ room, data }) => {
+    // Add the track data to the room's data
+    const trackData = roomData.get(room) || [];
+    trackData.push(data);
+    roomData.set(room, trackData);
+
+    // Broadcast the track data to the other users in the room
+    socket.to(room).emit('track', data);
+  });
+
+  // When a user sends an undo command
+  socket.on('undo', room => {
+    // Remove the last piece of track data from the room's data
+    const trackData = roomData.get(room);
+    if (trackData) {
+      trackData.pop();
+      roomData.set(room, trackData);
+    }
+
+    // Broadcast the undo command to the other users in the room
+    socket.to(room).emit('undo');
+  });
 });
 
 server.listen(port)
+if (! isProduction) console.log(`Serving app at http://localhost:${port}`);

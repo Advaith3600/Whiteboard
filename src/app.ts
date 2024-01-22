@@ -19,7 +19,10 @@ cvs.width = width;
 cvs.height = height;
 
 // creating socket connection
-const socket = io('http://localhost:5173');
+const socket = io(import.meta.env.SERVER_URL);
+const room = window.location.pathname.slice(1);
+socket.emit('joinRoom', room);
+socket.on('roomJoined', data => data.forEach(item => track.push(item.map(u => (u.pen = new pens[u.penName](u.pen.size, u.pen.color), u)))));
 socket.on('track', data => track.push(data.map(u => (u.pen = new pens[u.penName](u.pen.size, u.pen.color), u))));
 socket.on('undo', () => track.pop());
 
@@ -74,7 +77,7 @@ function handleMouseUp(e) {
 		pen
 	});
 
-	socket.emit('track', currentTrack.map(u => (u.penName = currentPen, u)));
+	socket.emit('track', { data: currentTrack.map(u => (u.penName = currentPen, u)), room });
 	pen = new pen.constructor(pen.size, pen.color);
 
 	track.push(currentTrack);
@@ -88,6 +91,8 @@ function draw() {
 	// redrawing everything if there is a change
 	if (track.length != trackLength || currentTrack.length > 0) {
 		ctx.clearRect(0, 0, cvs.width, cvs.height);
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, cvs.width, cvs.height);
 
 		// drawing all the elements
 		track.forEach(i => i[0].pen.display(i, ctx));
@@ -141,7 +146,7 @@ $('.pen_size_slider .slider').addEventListener('input', function ({ target }) {
 // handling undo event
 $('.undo_option').addEventListener('click', function (event) {
 	track.pop();
-	socket.emit('undo');
+	socket.emit('undo', room);
 });
 
 window.addEventListener('load', () => {
